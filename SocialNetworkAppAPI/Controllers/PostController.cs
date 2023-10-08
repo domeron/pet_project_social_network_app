@@ -10,16 +10,19 @@ namespace SocialNetworkAppAPI.Controllers
     [ApiController]
     public class PostController : ControllerBase
     {
+        private readonly ILogger<PostController> _logger;
         private readonly AppDbContext _context;
 
-        public PostController(AppDbContext context)
+        public PostController(AppDbContext context, ILogger<PostController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         [HttpGet(Name ="Posts")]
         public async IAsyncEnumerable<Post> GetPosts()
         {
+            _logger.LogInformation("GetPosts method started");
             var posts = _context.Posts.AsAsyncEnumerable();
             await foreach (var post in posts)
             {
@@ -30,6 +33,7 @@ namespace SocialNetworkAppAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreatePost(PostCreateDTO model)
         {
+            _logger.LogInformation("CreatePost method started");
             if (ModelState.IsValid)
             {
                 var post = new Post();
@@ -51,6 +55,7 @@ namespace SocialNetworkAppAPI.Controllers
 
         [HttpPost]
         public async Task<IActionResult> UpdatePost(PostUpdateDTO model) {
+            _logger.LogInformation("Update method started");
             if (ModelState.IsValid) { 
                 var post = _context.Posts.Where(p => p.Id == model.Id)
                     .FirstOrDefault();
@@ -74,7 +79,8 @@ namespace SocialNetworkAppAPI.Controllers
 
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
-        { 
+        {
+            _logger.LogInformation("Delete method started");
             var post = _context.Posts.Where(p => p.Id == id).FirstOrDefault();
             if (post != null)
             {

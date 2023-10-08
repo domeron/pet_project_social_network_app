@@ -1,9 +1,24 @@
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using SocialNetworkAppAPI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Logging
+    .ClearProviders()
+    .AddSimpleConsole()
+    .AddDebug();
+
+builder.Host.UseSerilog((ctx, lc) =>
+{
+    lc.ReadFrom.Configuration(ctx.Configuration);
+    lc.WriteTo.File("Logs/log.txt",
+        outputTemplate:
+            "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:1j} {NewLine} {Exception}",
+        rollingInterval: RollingInterval.Day);
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
