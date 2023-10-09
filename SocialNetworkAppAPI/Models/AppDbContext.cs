@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SocialNetworkAppAPI.Models
 {
-    public class AppDbContext : IdentityDbContext<ApiUser>
+    public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options) { }

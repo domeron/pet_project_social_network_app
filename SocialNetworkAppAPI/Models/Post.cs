@@ -14,5 +14,6 @@ namespace SocialNetworkAppAPI.Models
 
         public DateTime CreatedDate { get; set; }
         public DateTime LastModifiedDate { get; set; }
+
     }
 }
