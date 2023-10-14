@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SocialNetworkAppAPI.DTO;
 using SocialNetworkAppAPI.Models;
+using SocialNetworkAppLibrary.DTO;
+using SocialNetworkAppLibrary.Models;
 
 namespace SocialNetworkAppAPI.Controllers
 {
