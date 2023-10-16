@@ -1,8 +1,8 @@
 ﻿.header {
-    background-color: green;
+    background-color: #589bff;
 }
 
-.header-tab {
-    color: white;
-    text-decoration: none;
+nav {
+    display: flex;
+    justify-content: space-between;
 }

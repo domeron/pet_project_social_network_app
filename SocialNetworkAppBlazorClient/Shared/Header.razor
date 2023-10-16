@@ -1,13 +1,18 @@
 ﻿<header class="header w-100">
-    <NavLink href="/"
-        class="header-tab">
-        Home
-    </NavLink>
-    <NavLink href="/new-post"
-             class="header-tab">
-        Write a post
-    </NavLink>
-    <NavLink class="header-tab">
-        About Us
-    </NavLink>
+    <nav class="">
+        <span class="d-flex">
+            <HeaderTab tabURL="/">
+                Home
+            </HeaderTab>
+
+            <HeaderTab tabURL="/new-post">
+                Write a Post
+            </HeaderTab>
+        </span>
+        <span class="d-flex">
+            <HeaderTab tabURL="/signin">
+                Sign In
+            </HeaderTab>
+        </span>
+    </nav>
 </header>
