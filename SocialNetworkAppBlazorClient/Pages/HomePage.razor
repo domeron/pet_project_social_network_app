@@ -1,0 +1,28 @@
+﻿@page "/"
+
+<h1>Hello, world!</h1>
+
+@if (posts == null)
+{
+    <p>No posts found</p>
+} else
+{
+    @foreach (var post in posts)
+    {
+        <div>
+            <span>@post.Title</span>
+            <span>@post.Content</span>
+        </div>    
+    }
+}
+
+@inject IPostsService _postsService
+
+@code {
+    private List<Post>? posts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        posts = await _postsService.GetAllPosts();
+    }
+}

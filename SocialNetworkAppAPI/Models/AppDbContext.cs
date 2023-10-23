@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SocialNetworkAppLibrary.Models;
 
 namespace SocialNetworkAppAPI.Models
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<ApiUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options) { }

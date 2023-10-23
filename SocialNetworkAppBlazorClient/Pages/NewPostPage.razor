@@ -1,0 +1,58 @@
+﻿@page "/new-post"
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize]
+
+<h3>NewPostPage</h3>
+
+<EditForm EditContext="@_editContext" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator/>
+
+    @if (!String.IsNullOrEmpty(_errorMessage))
+    {
+        <div>
+            <p>@_errorMessage</p>
+        </div>
+    }
+
+    <div>
+        <InputText @bind-Value="Model!.Title"/>
+        <ValidationMessage For="@(() => Model.Title)"/>
+    </div>
+
+    <div>
+        <InputTextArea @bind-Value="Model!.Content" />
+        <ValidationMessage For="@(() => Model.Content)" />
+    </div>
+
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</EditForm>
+
+@inject IPostsService _postsService
+@inject NavigationManager _navigationManager;
+
+@code {
+    private EditContext? _editContext;
+    public PostCreateDTO? Model { get; set; }
+    private string _errorMessage;
+
+    protected override void OnInitialized()
+    {
+        Model ??= new();
+        _editContext = new(Model);
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            await _postsService.CreatePost(Model);
+            _navigationManager.NavigateTo("/");
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+    }
+}

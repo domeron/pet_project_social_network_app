@@ -1,6 +1,10 @@
-﻿@inherits LayoutComponentBase
+﻿@using SocialNetworkAppBlazorClient.Shared
+@inherits LayoutComponentBase
 
-<Header/>
-<div>
-    @Body
-</div>
+<main>
+    <Header/>
+    <article>
+        @Body
+    </article>
+    <Footer/>
+</main>

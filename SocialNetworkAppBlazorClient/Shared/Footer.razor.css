@@ -1,0 +1,11 @@
+﻿.footer {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    
+    padding: 2em;
+
+    background-color: #dcdcdc;
+    width: 100%;
+
+    border-top: 0.1em solid #808080;
+}

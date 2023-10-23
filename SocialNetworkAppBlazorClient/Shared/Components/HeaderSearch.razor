@@ -1,0 +1,14 @@
+﻿
+
+<div class="searchInputWrapper">
+    <InputText @bind-Value="@_searchInput" @bind-Value:event="oninput" placeholder="Search"
+    class="searchInput"/>
+</div>
+
+@code {
+    private string _searchInput;
+
+    protected override void OnInitialized()
+    {
+    }
+}

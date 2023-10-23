@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace SocialNetworkAppAPI.Models
+namespace SocialNetworkAppAPI.Models;
+
+public class ApiUser : IdentityUser
 {
-    public class ApiUser : IdentityUser
-    {
-    }
 }

@@ -1,43 +1,57 @@
 ﻿@page "/signin"
 
-<div class="main px-4 py-4">
-    <h4>Sign In</h4>
-    <EditForm EditContext="@editContext"
-        OnValidSubmit="@OnValidSubmit"
-        class="mb-2 d-flex flex-column w-50">
-        <DataAnnotationsValidator/>
+<h3>SignInPage</h3>
 
-        <div class="form-field my-2 d-flex">
-            <InputText @bind-Value="Model!.Email" 
-            class="rounded-1 border-1 border-dark"/>
-            <ValidationMessage For="@(()=>Model.Email)"/>
-        </div>
-        <div class="form-field my-2 d-flex">
-            <InputText @bind-Value="Model!.Password" type="password" 
-                       class="rounded-1 border-1 border-dark" />
-            <ValidationMessage For="@(()=>Model.Password)" />
-        </div>
-        <button type="submit"
-            class="d-flex w-100 py-1 px-2 bg-success text-white border-1 border-dark rounded-1">
-            Submit
-        </button>
-    </EditForm>
-    <p>Don't have an account? <a href="/signup">Sign Up here</a></p>
-</div>
+<EditForm EditContext="@_editContext" OnValidSubmit="@HandleValidSubmit">
+    @if (!String.IsNullOrEmpty(_errorMessage))
+    {
+        <div>
+            <p>@_errorMessage</p>
+        </div>    
+    }
+
+    <div class="form-field">
+        <label>Email:</label>
+        <InputText @bind-Value="Model!.Email"/>
+        <ValidationMessage For="@(() => Model.Email)"/>
+    </div>
+    <div class="form-field">
+        <label>Password:</label>
+        <InputText @bind-Value="Model!.Password" />
+        <ValidationMessage For="@(() => Model.Password)" />
+    </div>
+
+    <div class="form-field">
+        <button type="submit">
+            Submit</button>
+    </div>
+
+    <p>Don't have an account? <a href="/signup">Sign Up Here</a></p>
+</EditForm>
+
+@inject IAuthenticationService _authenticationService
+@inject NavigationManager _navigationManager;
 
 @code {
-    private EditContext? editContext;
-    public SignInDTO? Model { get; set; }
+    private EditContext? _editContext;
+    private SignInDTO? Model;
+    private string _errorMessage;
 
     protected override void OnInitialized()
     {
         Model ??= new();
-        editContext = new(Model);
+        _editContext = new(Model);
     }
 
-    private async void OnValidSubmit()
+    private async Task HandleValidSubmit()
     {
-        
+        try
+        {
+            await _authenticationService.SignIn(Model.Email, Model.Password);
+            _navigationManager.NavigateTo("/");
+        } catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
     }
-
 }

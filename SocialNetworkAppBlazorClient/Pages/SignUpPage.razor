@@ -1,56 +1,66 @@
 ﻿@page "/signup"
 
-<div class="main px-4 py-4">
-    <h4>Sign Up</h4>
-    <EditForm EditContext="@editContext"
-              OnValidSubmit="@OnValidSubmit"
-              class="mb-2 d-flex flex-column w-50">
-        <DataAnnotationsValidator />
+<h3>SignUpPage</h3>
 
-        <div class="form-field my-2 d-flex">
-            <label>First Name:</label>
-            <InputText @bind-Value="Model!.FirstName"
-                       class="rounded-1 border-1 border-dark" />
-            <ValidationMessage For="@(()=>Model.FirstName)" />
-        </div>
-        <div class="form-field my-2 d-flex">
-            <label>Last Name:</label>
-            <InputText @bind-Value="Model!.LastName"
-                       class="rounded-1 border-1 border-dark" />
-            <ValidationMessage For="@(()=>Model.LastName)" />
-        </div>
-        <div class="form-field my-2 d-flex">
-            <label>E-mail:</label>
-            <InputText @bind-Value="Model!.Email"
-                       class="rounded-1 border-1 border-dark" />
-            <ValidationMessage For="@(()=>Model.Email)" />
-        </div>
-        <div class="form-field my-2 d-flex">
-            <label>Password:</label>
-            <InputText @bind-Value="Model!.Password" type="password"
-                       class="rounded-1 border-1 border-dark" />
-            <ValidationMessage For="@(()=>Model.Password)" />
-        </div>
-        <button type="submit"
-                class="d-flex w-100 py-1 px-2 bg-success text-white border-1 border-dark rounded-1">
-            Submit
+<EditForm EditContext="@_editContext" OnValidSubmit="@HandleValidSubmit">
+    @if (!String.IsNullOrEmpty(_errorMessage))
+    {
+        <div>
+            <p>@_errorMessage</p>
+        </div>  
+    }
+
+    <div class="form-field">
+        <label>Username:</label>
+        <InputText @bind-Value="Model!.UserName"/>
+        <ValidationMessage For="@(() => Model.UserName)"/>
+    </div>
+
+    <div class="form-field">
+        <label>E-mail:</label>
+        <InputText @bind-Value="Model!.Email" />
+        <ValidationMessage For="@(() => Model.Email)" />
+    </div>
+
+    <div class="form-field">
+        <label>Password:</label>
+        <InputText @bind-Value="Model!.Password" />
+        <ValidationMessage For="@(() => Model.Password)" />
+    </div>
+
+    <div class="form-field">
+        <button type="submit">
+            Sign Up
         </button>
-    </EditForm>
+    </div>
+
     <p>Already have an account? <a href="/signin">Sign In here</a></p>
-</div>
+</EditForm>
+
+@inject IAuthenticationService _authenticationService
+@inject NavigationManager _navigationManager
 
 @code {
-    private EditContext? editContext;
-    public SignUpDTO? Model { get; set; }
+    private EditContext? _editContext;
+    private SignUpDTO? Model;
+    private string _errorMessage;
 
     protected override void OnInitialized()
     {
         Model ??= new();
-        editContext = new(Model);
+        _editContext = new(Model);
     }
 
-    private async void OnValidSubmit()
+    private async Task HandleValidSubmit()
     {
-            
+        try
+        {
+            await _authenticationService.SignUp(Model!);
+            _navigationManager.NavigateTo("/signin");
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
     }
 }

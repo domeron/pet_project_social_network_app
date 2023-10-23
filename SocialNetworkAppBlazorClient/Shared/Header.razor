@@ -1,18 +1,59 @@
-﻿<header class="header w-100">
-    <nav class="">
-        <span class="d-flex">
-            <HeaderTab tabURL="/">
-                Home
-            </HeaderTab>
+﻿
+<header>
+    <nav>
+        <div class="header-section">
+            <NavLink href="/" Match="NavLinkMatch.All" ActiveClass="nav-active"
+            class="nav-link">Home</NavLink>
+            <NavLink href="/new-post" Match="NavLinkMatch.All" ActiveClass="nav-active"
+            class="nav-link">Write a post</NavLink>
+        </div>
 
-            <HeaderTab tabURL="/new-post">
-                Write a Post
-            </HeaderTab>
-        </span>
-        <span class="d-flex">
-            <HeaderTab tabURL="/signin">
-                Sign In
-            </HeaderTab>
-        </span>
+        <div class="header-section">
+            <HeaderSearch/>
+
+            @if (User is not null)
+            {
+                <span>@User.UserName</span>
+                <span @onclick="@HandleSignOut"
+                    class="nav-link">Sign Out</span>
+            } else
+            {
+                <NavLink href="/signin" Match="NavLinkMatch.All" ActiveClass="nav-active"
+                            class="nav-link">Sign In</NavLink>
+            }
+        </div>
     </nav>
 </header>
+
+@inject IAuthenticationService _authenticationService
+@inject ILocalStorageService _localStorageService
+@implements IDisposable
+
+@code {
+    private User? User = null;
+
+    protected async override Task OnInitializedAsync()
+    {
+        User = await _localStorageService.GetItem<User?>("user");
+        _authenticationService.UserSignedIn += HandleSignedIn;
+    }
+
+    public void Dispose()
+    {
+        _authenticationService.UserSignedIn -= HandleSignedIn;    
+    }
+
+    private async void HandleSignedIn(object sender, UserSignedInEventArgs e)
+    {
+        if (e.isSignedIn)
+            User = await _localStorageService.GetItem<User?>("user");
+        else
+            User = null;
+        StateHasChanged();
+    }
+
+    private async void HandleSignOut()
+    {
+        await _authenticationService.SignOut();
+    }
+}

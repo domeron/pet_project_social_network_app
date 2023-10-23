@@ -1,8 +1,30 @@
-﻿.header {
-    background-color: #589bff;
+﻿header {
+    border-bottom: 0.1em solid #000000;
+    background-color: #49b364
 }
 
 nav {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    
+    margin: 0 15em;
+
+}
+
+.header-section {
+    display: flex;
+}
+
+::deep .nav-link {
+    text-decoration: none;
+    color: #FFF;
+    padding: 0.8em 1em;
+}
+
+    ::deep .nav-link:hover {
+        background-color: #389d52;
+    }
+
+::deep .nav-active {
 }
