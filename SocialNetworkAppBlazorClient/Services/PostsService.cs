@@ -1,5 +1,6 @@
-﻿using SocialNetworkAppLibrary.DTO;
-using SocialNetworkAppLibrary.Models;
+﻿using SocialNetworkAppBlazorClient.Models;
+using SocialNetworkAppLibrary.DTO;
+
 
 namespace SocialNetworkAppBlazorClient.Services;
 
@@ -19,7 +20,7 @@ public class PostsService : IPostsService
 
     public async Task<List<Post>> GetAllPosts()
     {
-        var posts = await _httpService.Get<List<Post>>("/Post/GetPosts");
+        var posts = await _httpService.Get<List<Post>>("/posts/all");
         return posts;
     }
 
@@ -27,7 +28,7 @@ public class PostsService : IPostsService
     {
         try
         {
-            await _httpService.Post<Post>("Post/CreatePost", model);
+            await _httpService.Post<Post>("posts/create", model);
         }
         catch { throw; }
     }

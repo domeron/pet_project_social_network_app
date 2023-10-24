@@ -1,0 +1,21 @@
+﻿.post-wrapper {
+    border: 0.1em solid #000000;
+    padding: 1em 2em;
+    margin: 2em 0;
+
+    background-color: #fff;
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.post-title {
+    font-weight: 600;
+    font-size: larger;
+}
+
+.post-date {
+    color: #808080;
+}

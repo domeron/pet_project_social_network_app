@@ -46,7 +46,7 @@ public class AuthenticationService : IAuthenticationService
     {
         try
         {
-            User = await _httpService.Post<User>("/Authenticate/signin",
+            User = await _httpService.Post<User>("/auth/signin",
                 new SignInDTO { Email = email, Password = password });
         }
         catch { throw; }
@@ -59,7 +59,7 @@ public class AuthenticationService : IAuthenticationService
     {
         try
         {
-            await _httpService.Post<Dictionary<string, string>>("/Authenticate/signup", model);
+            await _httpService.Post<Dictionary<string, string>>("/auth/signup", model);
         }
         catch { throw; }
     }

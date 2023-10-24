@@ -9,13 +9,8 @@ namespace SocialNetworkAppLibrary.DTO;
 public class SignUpDTO
 {
     [Required]
-    [MaxLength(100)]
-    [MinLength(2)]
-    public string FirstName { get; set; }
-    [Required]
-    [MaxLength(100)]
-    [MinLength(2)]
-    public string LastName { get; set; }
+    public string UserName { get; set; }
+
     [Required]
     [EmailAddress]
     public string Email { get; set; }

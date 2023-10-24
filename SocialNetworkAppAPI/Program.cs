@@ -5,6 +5,8 @@ using SocialNetworkAppAPI.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using SocialNetworkAppAPI.Services;
+using SocialNetworkAppAPI.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -79,6 +81,8 @@ builder.Services.AddAuthentication(opts =>
         };
     });
 
+builder.Services.AddScoped<IPostRepository, PostRepository>();
+builder.Services.AddScoped<IPostsService, PostsService>();
 
 var app = builder.Build();
 

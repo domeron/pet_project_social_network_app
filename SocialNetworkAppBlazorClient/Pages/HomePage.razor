@@ -10,8 +10,7 @@
     @foreach (var post in posts)
     {
         <div>
-            <span>@post.Title</span>
-            <span>@post.Content</span>
+            <PostComponent Post="@post"/>
         </div>    
     }
 }
