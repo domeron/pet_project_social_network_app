@@ -1,12 +1,13 @@
 ﻿<div class="post-wrapper">
     <div class="post-header">
-        <span class="post-title">@Post.Title</span>
+        <span class="post-title">@@@Post.UserName</span>
         <span class="post-date">@Post.LastModifiedDate</span>
     </div>
+    <span class="post-title">@Post.Title</span>
     <p>@Post.Content</p>
 </div>
 
 @code {
     [Parameter]
-    public Post Post { get; set; }
+    public PostViewModel Post { get; set; }
 }

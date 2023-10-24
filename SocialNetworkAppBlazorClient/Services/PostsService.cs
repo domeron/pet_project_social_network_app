@@ -1,11 +1,14 @@
-﻿using SocialNetworkAppBlazorClient.Models;
-using SocialNetworkAppLibrary.DTO;
+﻿
 
+
+using SocialNetworkAppLibrary.Data.DTO;
+using SocialNetworkAppLibrary.Data.ViewModels;
 
 namespace SocialNetworkAppBlazorClient.Services;
 
-public interface IPostsService {
-    Task<List<Post>> GetAllPosts();
+public interface IPostsService
+{
+    Task<List<PostViewModel>> GetAllPosts();
     Task CreatePost(PostCreateDTO model);
 }
 
@@ -18,9 +21,9 @@ public class PostsService : IPostsService
         _httpService = httpService;
     }
 
-    public async Task<List<Post>> GetAllPosts()
+    public async Task<List<PostViewModel>> GetAllPosts()
     {
-        var posts = await _httpService.Get<List<Post>>("/posts/all");
+        var posts = await _httpService.Get<List<PostViewModel>>("/posts/all");
         return posts;
     }
 
@@ -28,7 +31,7 @@ public class PostsService : IPostsService
     {
         try
         {
-            await _httpService.Post<Post>("posts/create", model);
+            await _httpService.Post<int>("posts/create", model);
         }
         catch { throw; }
     }

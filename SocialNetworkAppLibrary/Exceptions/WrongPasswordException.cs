@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SocialNetworkAppLibrary.Exceptions;
-internal class WrongPasswordException : Exception
+﻿namespace SocialNetworkAppLibrary.Exceptions;
+public class WrongPasswordException : Exception
 {
 }

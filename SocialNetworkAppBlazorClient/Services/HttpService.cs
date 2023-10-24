@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
-using SocialNetworkAppBlazorClient.Models;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
 using System.Text.Json;
+using System.Text;
+using SocialNetworkAppBlazorClient.Models;
 
 namespace SocialNetworkAppBlazorClient.Services;
 
@@ -21,10 +21,10 @@ public class HttpService : IHttpService
     private readonly ILogger<HttpService> _logger;
 
     public HttpService(
-        HttpClient httpClient, 
-        NavigationManager navigationManager, 
-        ILocalStorageService localStorageService, 
-        IConfiguration configuration, 
+        HttpClient httpClient,
+        NavigationManager navigationManager,
+        ILocalStorageService localStorageService,
+        IConfiguration configuration,
         ILogger<HttpService> logger)
     {
         _httpClient = httpClient;
@@ -51,11 +51,13 @@ public class HttpService : IHttpService
         catch { throw; };
     }
 
-    private async Task<T> sendRequest<T>(HttpRequestMessage request) {
+    private async Task<T> sendRequest<T>(HttpRequestMessage request)
+    {
         var user = await _localStorageService.GetItem<User>("user");
         var isApiUrl = request.RequestUri.IsAbsoluteUri;
         Console.WriteLine("not in if");
-        if (user != null) { 
+        if (user != null)
+        {
             Console.WriteLine("in if");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", user.Token);
         }

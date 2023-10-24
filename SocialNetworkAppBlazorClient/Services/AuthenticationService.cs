@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
 using SocialNetworkAppBlazorClient.Models;
-using SocialNetworkAppLibrary.DTO;
-using System.Reflection.Metadata;
+using SocialNetworkAppLibrary.Data.DTO;
 
 namespace SocialNetworkAppBlazorClient.Services;
 
 public interface IAuthenticationService
-{ 
+{
     User? User { get; }
     event EventHandler<UserSignedInEventArgs> UserSignedIn;
     Task Initialize();
@@ -79,6 +78,6 @@ public class AuthenticationService : IAuthenticationService
 }
 
 public class UserSignedInEventArgs : EventArgs
-{ 
+{
     public bool isSignedIn { get; set; }
 }

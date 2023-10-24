@@ -1,12 +1,14 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using Serilog;
-using SocialNetworkAppAPI.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using SocialNetworkAppAPI.Services;
+using Serilog;
+using SocialNetworkAppAPI.Data;
 using SocialNetworkAppAPI.Repositories;
+using SocialNetworkAppAPI.Services;
+using SocialNetworkAppLibrary.Data.Models;
+using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +25,7 @@ builder.Host.UseSerilog((ctx, lc) =>
             "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:1j} {NewLine} {Exception}",
         rollingInterval: RollingInterval.Day);
     lc.WriteTo.BrowserConsole(
-        outputTemplate:"{Meessage:lj}");
+        outputTemplate: "{Meessage:lj}");
 });
 
 builder.Services.AddCors(options =>
@@ -36,10 +38,13 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(opts =>
+    {
+        opts.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    });
 
 builder.Services.AddEndpointsApiExplorer();
-
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -58,7 +63,6 @@ builder.Services.Configure<IdentityOptions>(opts =>
     opts.Password.RequireDigit = false;
     opts.Password.RequireLowercase = false;
     opts.Password.RequireUppercase = false;
-
 });
 
 builder.Services.AddAuthentication(opts =>

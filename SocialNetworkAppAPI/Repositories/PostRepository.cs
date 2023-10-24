@@ -1,13 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using SocialNetworkAppAPI.DTO;
+using SocialNetworkAppAPI.Data;
+using SocialNetworkAppLibrary.Data.DTO;
+using SocialNetworkAppLibrary.Data.Models;
 using SocialNetworkAppLibrary.Exceptions;
-using SocialNetworkAppAPI.Models;
-using SocialNetworkAppLibrary.DTO;
 
 namespace SocialNetworkAppAPI.Repositories;
 
-public interface IPostRepository {
+public interface IPostRepository
+{
     IAsyncEnumerable<Post> GetPosts();
     Task<Post> CreatePostAsync(PostCreateDTO createModel);
     Task<Post> UpdatePostAsync(PostUpdateDTO updateModel);
@@ -18,14 +19,17 @@ public class PostRepository : IPostRepository
     private readonly AppDbContext _context;
 
     public PostRepository(AppDbContext context)
-    { 
+    {
         _context = context;
     }
     public async IAsyncEnumerable<Post> GetPosts()
     {
-        var posts = _context.Posts.AsAsyncEnumerable();
+        var posts = _context.Posts
+            .Include(p => p.User)
+            .AsAsyncEnumerable();
 
-        await foreach (var post in posts) { 
+        await foreach (var post in posts)
+        {
             yield return post;
         }
     }
@@ -34,6 +38,7 @@ public class PostRepository : IPostRepository
     {
         var post = new Post
         {
+            UserId = model.UserId,
             Title = model.Title,
             Content = model.Content,
             LastModifiedDate = DateTime.UtcNow,
@@ -51,7 +56,7 @@ public class PostRepository : IPostRepository
         {
             if (!model.Title.IsNullOrEmpty() && !post.Title.Equals(model.Title))
                 post.Title = model.Title!;
-            if(!model.Content.IsNullOrEmpty() && !post.Content.Equals(model.Content)) 
+            if (!model.Content.IsNullOrEmpty() && !post.Content.Equals(model.Content))
                 post.Content = model.Content;
 
             post.LastModifiedDate = DateTime.UtcNow;
@@ -64,13 +69,15 @@ public class PostRepository : IPostRepository
     }
 
     public async Task<Post> DeletePostAsync(int postId)
-    { 
+    {
         var post = await _context.Posts.Where(p => p.Id == postId).FirstOrDefaultAsync();
-        if (post != null) { 
+        if (post != null)
+        {
             _context.Posts.Remove(post);
             _context.Entry(post).State &= EntityState.Deleted;
             await _context.SaveChangesAsync();
             return post;
-        } else throw new NotFoundException();
+        }
+        else throw new NotFoundException();
     }
 }

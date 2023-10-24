@@ -1,11 +1,12 @@
-﻿using SocialNetworkAppAPI.DTO;
-using SocialNetworkAppAPI.Models;
+﻿
 using SocialNetworkAppAPI.Repositories;
-using SocialNetworkAppLibrary.DTO;
+using SocialNetworkAppLibrary.Data.DTO;
+using SocialNetworkAppLibrary.Data.Models;
 
 namespace SocialNetworkAppAPI.Services;
 
-public interface IPostsService {
+public interface IPostsService
+{
     IAsyncEnumerable<Post> GetPosts();
     Task<(Post?, Exception?)> CreatePost(PostCreateDTO model);
     Task<(Post?, Exception?)> UpdatePost(PostUpdateDTO model);
@@ -18,7 +19,7 @@ public class PostsService : IPostsService
     private readonly ILogger<PostsService> _logger;
 
     public PostsService(
-        IPostRepository postRepository, 
+        IPostRepository postRepository,
         ILogger<PostsService> logger)
     {
         _postRepository = postRepository;
@@ -28,7 +29,17 @@ public class PostsService : IPostsService
     {
         var posts = _postRepository.GetPosts();
 
-        await foreach (var post in posts) {
+        await foreach (var post in posts)
+        {
+            /*yield return new PostViewModel { 
+                Id = post.Id,
+                Title = post.Title,
+                Content = post.Content,
+                UserId = post.UserId,
+                UserName = post.User.UserName,
+                LastModifiedDate = post.LastModifiedDate,
+                CreatedDate = post.CreatedDate,
+            };*/
             yield return post;
         }
     }
@@ -40,7 +51,8 @@ public class PostsService : IPostsService
             var post = await _postRepository.CreatePostAsync(model);
             return (post, null);
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             return (null, ex);
         }
     }

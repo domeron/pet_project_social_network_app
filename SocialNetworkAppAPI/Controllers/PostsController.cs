@@ -1,13 +1,11 @@
 ﻿
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using SocialNetworkAppAPI.DTO;
-using SocialNetworkAppAPI.Exceptions;
-using SocialNetworkAppAPI.Models;
 using SocialNetworkAppAPI.Services;
-using SocialNetworkAppLibrary.DTO;
+using SocialNetworkAppLibrary.Data.DTO;
+using SocialNetworkAppLibrary.Data.Models;
+using SocialNetworkAppLibrary.Data.ViewModels;
+using SocialNetworkAppLibrary.Exceptions;
 
 namespace SocialNetworkAppAPI.Controllers
 {
@@ -26,14 +24,23 @@ namespace SocialNetworkAppAPI.Controllers
 
         [HttpGet]
         [Route("all")]
-        public async IAsyncEnumerable<Post> GetPosts()
+        public async IAsyncEnumerable<PostViewModel> GetPosts()
         {
             _logger.LogInformation("GetPosts method started");
 
             var posts = _postsService.GetPosts();
             await foreach (var post in posts)
             {
-                yield return post;
+                yield return new PostViewModel
+                {
+                    Id = post.Id,
+                    UserId = post.UserId,
+                    Title = post.Title,
+                    UserName = post.User.UserName,
+                    Content = post.Content,
+                    CreatedDate = post.CreatedDate,
+                    LastModifiedDate = post.LastModifiedDate,
+                };
             }
         }
 
@@ -47,7 +54,7 @@ namespace SocialNetworkAppAPI.Controllers
 
             (Post? post, Exception? ex) = await _postsService.CreatePost(model);
             if (post != null && ex == null)
-                return Created(nameof(CreatePostAsync), post);
+                return Created(nameof(CreatePostAsync), post.Id);
             else if (ex is NotFoundException)
                 return NotFound();
             else return StatusCode(500, ex);
@@ -57,7 +64,8 @@ namespace SocialNetworkAppAPI.Controllers
         [HttpPost]
         [Route("update")]
         [Authorize]
-        public async Task<IActionResult> UpdatePostAsync(PostUpdateDTO model) {
+        public async Task<IActionResult> UpdatePostAsync(PostUpdateDTO model)
+        {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             _logger.LogInformation("UpdatePost method started");
 

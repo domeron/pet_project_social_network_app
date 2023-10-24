@@ -4,15 +4,13 @@ using SocialNetworkAppBlazorClient;
 using SocialNetworkAppBlazorClient.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
-
-
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 var apiUrl = new Uri(builder.Configuration["apiUrl"]!);
 
-builder.Services.AddScoped(sp => new HttpClient 
-{ 
+builder.Services.AddScoped(sp => new HttpClient
+{
     BaseAddress = apiUrl
 });
 
@@ -23,7 +21,7 @@ builder.Services.AddScoped<IPostsService, PostsService>();
 
 var host = builder.Build();
 
-var authenticationService = host.Services.GetRequiredService <IAuthenticationService>();
+var authenticationService = host.Services.GetRequiredService<IAuthenticationService>();
 await authenticationService.Initialize();
 
 await host.RunAsync();

@@ -1,5 +1,4 @@
 ﻿@page "/new-post"
-@using Microsoft.AspNetCore.Authorization;
 @attribute [Authorize]
 
 <h3>NewPostPage</h3>
@@ -30,6 +29,7 @@
 </EditForm>
 
 @inject IPostsService _postsService
+@inject IAuthenticationService _authenticationService
 @inject NavigationManager _navigationManager;
 
 @code {
@@ -37,10 +37,12 @@
     public PostCreateDTO? Model { get; set; }
     private string _errorMessage;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         Model ??= new();
         _editContext = new(Model);
+        if (_authenticationService.User != null)
+            Model.UserId = _authenticationService.User.Id;
     }
 
     private async Task HandleValidSubmit()
