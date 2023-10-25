@@ -1,19 +1,31 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
+<div class="main">
+    <div class="sidebar left-sidebar">
+        <SideNavBar/>
+    </div>
 
-@if (posts == null)
-{
-    <p>No posts found</p>
-} else
-{
-    @foreach (var post in posts)
-    {
-        <div>
-            <PostComponent Post="@post"/>
-        </div>    
-    }
-}
+    <div class="main-content">
+        @if (posts == null)
+        {
+            <p>No posts found</p>
+        }
+        else
+        {
+            <div class="posts-wrapper">
+                @foreach (var post in posts)
+                {
+                    <PostComponent Post="@post" />
+                }
+            </div>
+        }
+    </div>
+
+    <div class="sidebar right-sidebar hidden">
+        aaaa
+    </div>
+</div>
+
 
 @inject IPostsService _postsService
 

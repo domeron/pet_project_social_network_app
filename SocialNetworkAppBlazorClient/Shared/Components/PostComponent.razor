@@ -1,13 +1,19 @@
 ﻿<div class="post-wrapper">
     <div class="post-header">
-        <span class="post-title">@@@Post.UserName</span>
-        <span class="post-date">@Post.LastModifiedDate</span>
+        <span class="post-username">@@@Post.UserName</span>
     </div>
-    <span class="post-title">@Post.Title</span>
-    <p>@Post.Content</p>
+    <p class="post-content">@Post.Content</p>
+    <span class="post-date">@_dateString</span>
 </div>
 
 @code {
     [Parameter]
     public PostViewModel Post { get; set; }
+
+    private string _dateString;
+
+    protected override void OnParametersSet()
+    {
+        _dateString = Post.CreatedDate.ToString("dd MMM, yyyy");
+    }
 }

@@ -39,7 +39,6 @@ public class PostRepository : IPostRepository
         var post = new Post
         {
             UserId = model.UserId,
-            Title = model.Title,
             Content = model.Content,
             LastModifiedDate = DateTime.UtcNow,
             CreatedDate = DateTime.UtcNow,
@@ -54,8 +53,6 @@ public class PostRepository : IPostRepository
         var post = await _context.Posts.Where(p => p.Id == model.Id).FirstOrDefaultAsync();
         if (post != null)
         {
-            if (!model.Title.IsNullOrEmpty() && !post.Title.Equals(model.Title))
-                post.Title = model.Title!;
             if (!model.Content.IsNullOrEmpty() && !post.Content.Equals(model.Content))
                 post.Content = model.Content;
 

@@ -35,11 +35,9 @@ namespace SocialNetworkAppAPI.Controllers
                 {
                     Id = post.Id,
                     UserId = post.UserId,
-                    Title = post.Title,
                     UserName = post.User.UserName,
                     Content = post.Content,
                     CreatedDate = post.CreatedDate,
-                    LastModifiedDate = post.LastModifiedDate,
                 };
             }
         }

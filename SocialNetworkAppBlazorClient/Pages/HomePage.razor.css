@@ -1,0 +1,28 @@
+﻿.main {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    gap: 1em;
+}
+
+.main-content {
+    flex-grow: 3;
+}
+
+.sidebar {
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 15em;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.left-sidebar {}
+
+.right-sidebar {}
+
+.posts-wrapper {
+}

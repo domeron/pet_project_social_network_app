@@ -1,0 +1,25 @@
+﻿.tabs-wrapper {
+    display: flex;
+    flex-direction: column;
+    border: 0.1em solid #000;
+    background-color: #fff;
+}
+
+::deep .tab {
+    padding: 0.5em 1em;
+    border-bottom: 0.1em solid #808080;
+    text-decoration: none;
+    color: #000;
+}
+
+    ::deep .tab:hover {
+        background-color: #e2e2e2;
+    }
+
+    ::deep .tab:last-of-type {
+        border: none;
+    }
+
+    ::deep .tab-active {
+        background-color: #e2e2e2;
+    }

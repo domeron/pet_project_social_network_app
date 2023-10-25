@@ -1,7 +1,7 @@
 ﻿.post-wrapper {
     border: 0.1em solid #000000;
-    padding: 1em 2em;
-    margin: 2em 0;
+    padding: 1em 1em;
+    margin-bottom: 1em;
     background-color: #fff;
 }
 
@@ -10,11 +10,14 @@
     justify-content: space-between;
 }
 
-.post-title {
+.post-username {
     font-weight: 600;
-    font-size: larger;
 }
 
 .post-date {
     color: #808080;
+}
+
+.post-content {
+    margin: 1em 0;
 }

@@ -14,11 +14,6 @@
     }
 
     <div>
-        <InputText @bind-Value="Model!.Title"/>
-        <ValidationMessage For="@(() => Model.Title)"/>
-    </div>
-
-    <div>
         <InputTextArea @bind-Value="Model!.Content" />
         <ValidationMessage For="@(() => Model.Content)" />
     </div>
