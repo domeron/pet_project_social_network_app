@@ -8,6 +8,7 @@ namespace SocialNetworkAppAPI.Services;
 public interface IPostsService
 {
     IAsyncEnumerable<Post> GetPosts();
+    IAsyncEnumerable<Post> GetUserPosts(string userId);
     Task<(Post?, Exception?)> CreatePost(PostCreateDTO model);
     Task<(Post?, Exception?)> UpdatePost(PostUpdateDTO model);
     Task<(Post?, Exception?)> DeletePost(int postId);
@@ -16,13 +17,16 @@ public interface IPostsService
 public class PostsService : IPostsService
 {
     private readonly IPostRepository _postRepository;
+    private readonly IUserRepository _userRepository;
     private readonly ILogger<PostsService> _logger;
 
     public PostsService(
         IPostRepository postRepository,
+        IUserRepository userRepository,
         ILogger<PostsService> logger)
     {
         _postRepository = postRepository;
+        _userRepository = userRepository;
         _logger = logger;
     }
     public async IAsyncEnumerable<Post> GetPosts()
@@ -31,15 +35,18 @@ public class PostsService : IPostsService
 
         await foreach (var post in posts)
         {
-            /*yield return new PostViewModel { 
-                Id = post.Id,
-                Title = post.Title,
-                Content = post.Content,
-                UserId = post.UserId,
-                UserName = post.User.UserName,
-                LastModifiedDate = post.LastModifiedDate,
-                CreatedDate = post.CreatedDate,
-            };*/
+            yield return post;
+        }
+    }
+
+    public async IAsyncEnumerable<Post> GetUserPosts(string userId)
+    {
+        if (await _userRepository.GetUserAsync(userId) == null)
+            yield return null;
+
+        var posts = _postRepository.GetUserPosts(userId);
+        await foreach (var post in posts)
+        {
             yield return post;
         }
     }

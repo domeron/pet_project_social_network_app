@@ -1,0 +1,15 @@
+﻿<li class="user-list-el">
+    <span @onclick="GoToProfile" class="username">@@@user.UserName</span>
+</li>
+
+@inject NavigationManager _navigationManager;
+
+@code {
+    [Parameter]
+    public UserViewModel user { get; set; }
+
+    private void GoToProfile()
+    {
+        _navigationManager.NavigateTo($"user/{user.UserId}");
+    }
+}

@@ -1,18 +1,29 @@
-﻿<div class="tabs-wrapper">
-    <NavLink Match="NavLinkMatch.All" ActiveClass="tab-active" href="/my-profile"
-    class="tab">
-        My Profile</NavLink>
-    <NavLink Match="NavLinkMatch.All" ActiveClass="tab-active" href="/friends"
-             class="tab">
-        Friends
-    </NavLink>
-    <NavLink Match="NavLinkMatch.All" ActiveClass="tab-active" href="/chat"
-             class="tab">
-        Chat
-    </NavLink>
-</div>
+﻿@if (authenticated)
+{
+    <div class="tabs-wrapper">
+        <NavLink Match="NavLinkMatch.All" ActiveClass="tab-active" href="@($"/user/{_authenticationSerivce.User!.Id}")"
+        class="tab">
+            My Profile</NavLink>
+        <NavLink Match="NavLinkMatch.All" ActiveClass="tab-active" href="@($"/friends/{_authenticationSerivce.User!.Id}")"
+                 class="tab">
+            Friends
+        </NavLink>
+        <NavLink Match="NavLinkMatch.All" ActiveClass="tab-active" href="/chat"
+                 class="tab">
+            Chat
+        </NavLink>
+    </div>
+}
 
+@inject IAuthenticationService _authenticationSerivce
 
 @code {
+    private bool authenticated =false;
 
+    protected override void OnInitialized()
+    {
+        if (_authenticationSerivce.User != null)
+        {
+            authenticated = true;        }
+    }
 }

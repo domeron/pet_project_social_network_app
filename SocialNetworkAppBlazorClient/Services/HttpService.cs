@@ -36,8 +36,12 @@ public class HttpService : IHttpService
 
     public async Task<T> Get<T>(string uri)
     {
-        var request = new HttpRequestMessage(HttpMethod.Get, uri);
-        return await sendRequest<T>(request);
+        try
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, uri);
+            return await sendRequest<T>(request);
+        }
+        catch { throw; }
     }
 
     public async Task<T> Post<T>(string uri, object value)

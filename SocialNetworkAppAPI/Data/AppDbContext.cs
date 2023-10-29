@@ -19,4 +19,5 @@ public class AppDbContext : IdentityDbContext<ApiUser>
     }
 
     public DbSet<Post> Posts => Set<Post>();
+    public DbSet<UserFollow> UserFollows => Set<UserFollow>();
 }

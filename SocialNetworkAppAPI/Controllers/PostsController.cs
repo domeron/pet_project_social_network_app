@@ -31,14 +31,20 @@ namespace SocialNetworkAppAPI.Controllers
             var posts = _postsService.GetPosts();
             await foreach (var post in posts)
             {
-                yield return new PostViewModel
-                {
-                    Id = post.Id,
-                    UserId = post.UserId,
-                    UserName = post.User.UserName,
-                    Content = post.Content,
-                    CreatedDate = post.CreatedDate,
-                };
+                yield return new PostViewModel(post);
+            }
+        }
+
+        [HttpGet]
+        [Route("user/{userId}")]
+        public async IAsyncEnumerable<PostViewModel> GetUserPosts(string userId)
+        {
+            _logger.LogInformation("GetUserPosts method started");
+
+            var posts = _postsService.GetUserPosts(userId);
+            await foreach (var post in posts)
+            {
+                yield return new PostViewModel(post);
             }
         }
 

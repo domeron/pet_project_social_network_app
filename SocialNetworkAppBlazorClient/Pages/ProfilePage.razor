@@ -1,0 +1,85 @@
+﻿@page "/user/{userId}"
+
+<div class="profile-top">
+    <div class="profile-top-header">
+        <span class="profile-username">@@@User.UserName</span>
+    </div>
+    @if (!myProfile && !isMyFriend)
+    {
+        <button @onclick="SendFriendRequest">Send Friend Request</button>    
+    }
+</div>
+
+<div>
+    @if (loading)
+    {
+        <span>loading...</span>
+    }
+
+    @if (UserPosts != null && UserPosts.Count() > 0)
+    {
+        <div class="posts-wrapper">
+            @foreach (var post in UserPosts)
+            {
+                <PostComponent Post="@post" />
+            }
+        </div>
+    }
+    else
+    {
+        <span>No Posts</span>
+    }
+</div>
+
+@inject IAuthenticationService _authenticationService
+@inject IUserService _userService
+@inject IPostsService _postsService
+
+@code {
+    [Parameter]
+    public string userId { get; set; }
+
+    private UserViewModel User { get; set; }
+    private List<PostViewModel> UserPosts { get; set; }
+
+    private bool loading;
+    private bool myProfile;
+    private bool isMyFriend;
+
+    protected override async Task OnInitializedAsync()
+    {
+        loading = true;
+        myProfile = false;
+        isMyFriend = false;
+        UserPosts = new();
+        await LoadUserPosts(userId);
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (_authenticationService.User != null)
+        {
+            if (_authenticationService.User.Id.Equals(userId))
+                myProfile = true;
+
+            if (!myProfile)
+            {
+                if (await _userService.CheckIfFriends(_authenticationService.User.Id, userId))
+                    isMyFriend = true;
+            }
+        }
+        User = await _userService.GetUserById(userId);
+    }
+
+    private async Task LoadUserPosts(string userId)
+    {
+        var posts = _postsService.GetUserPosts(userId);
+        await foreach (var post in posts)
+        {
+            UserPosts.Add(post);
+            StateHasChanged();
+        }
+        loading = false;
+    }
+
+}

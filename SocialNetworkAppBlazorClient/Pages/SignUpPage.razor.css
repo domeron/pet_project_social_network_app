@@ -1,0 +1,58 @@
+﻿.form-wrapper {
+    width: 24em;
+    margin: 10em auto;
+    background-color: #FFF;
+    border: 0.1em solid #000;
+    padding: 2em;
+}
+
+::deep .form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-title {
+    font-size: x-large;
+    font-weight: 600;
+    margin-bottom: 1em;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1em;
+    gap: 0.2em;
+}
+
+::deep .input-text {
+    padding: 0.3em;
+}
+
+.button-field {
+    margin-top: 2em;
+}
+
+    .button-field button {
+        cursor: pointer;
+        padding: 0.8em 1em;
+        color: #FFF;
+        border: 0.1em solid #000;
+        background-color: #49b364;
+    }
+
+        .button-field button:hover {
+            background-color: #389d52;
+        }
+
+.error-wrapper {
+    padding: 1em 1em;
+    border-radius: 0.2em;
+    background-color: #ffd5d5;
+    color: #a80000;
+    font-weight: 500;
+    margin-bottom: 1em;
+}
+
+.validation-message {
+    color: #ff0000;
+}

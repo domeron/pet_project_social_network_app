@@ -1,0 +1,53 @@
+﻿@page "/search"
+
+<div class="search-input-wrapper">
+    <InputText @bind-Value="SearchInput" @oninput="HandleSearch" placeholder="Search..."
+    class="input-text"/>
+    <InputSelect @bind-Value="SearchOption" class="input-select">
+        <option value="0">Users</option>
+        <option value="1">Posts</option>
+    </InputSelect>
+</div>
+
+@if (SearchResults.Count > 0)
+{   
+    <span class="results-count">@SearchResults.Count results</span>
+    
+    <ul class="search-results-ul">
+        @foreach (var user in SearchResults)
+        {
+            <UserListView user="user"/>
+        }
+    </ul>
+} 
+else
+{
+    <span>No results.</span>    
+}
+
+@inject IUserService _userService;
+
+@code {
+    private string SearchInput { get; set; }
+    private int SearchOption { get; set; }
+    private List<UserViewModel> SearchResults { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        SearchResults = new();
+    }
+
+    private async Task HandleSearch(ChangeEventArgs args)
+    {
+        Console.WriteLine(args.Value.ToString());
+        SearchResults.Clear();
+        if (!String.IsNullOrEmpty(args.Value.ToString()))
+        {
+            var searchUsers = _userService.GetUsersByUsername(args.Value.ToString());
+            await foreach (var user in searchUsers)
+            {
+                SearchResults.Add(user);
+            }
+        }
+    }
+}

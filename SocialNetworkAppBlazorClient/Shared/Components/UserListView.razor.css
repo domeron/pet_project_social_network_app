@@ -1,0 +1,14 @@
+﻿.user-list-el {
+    padding: 1em;
+    background-color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.username {
+    cursor: pointer;
+}
+
+    .username:hover {
+        color: #1700ff;
+    }

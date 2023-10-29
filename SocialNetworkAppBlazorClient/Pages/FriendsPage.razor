@@ -1,19 +1,47 @@
-﻿@page "/friends"
+﻿@page "/friends/{userId}"
 
-<div class="main">
-    <div class="sidebar left-sidebar">
-        <SideNavBar />
+<div class="">
+    <div class="search-wrapper">
+        <InputText @bind-Value="SearchInput" @oninput="SearchUsers" placeholder="Search"/>
     </div>
 
-    <div class="main-content">
-        <h2>Friends page</h2>
-    </div>
-
-    @*<div class="sidebar right-sidebar hidden">
-        aaaa
-    </div>*@
+    @if (_searchUsers.Count() > 0)
+    {
+    <div>
+        @foreach (var user in _searchUsers)
+        {
+            <UserListView User="@user"/>
+        }
+    </div>    
+    }
 </div>
 
-@code {
+@inject IUserService _userService
 
+@code {
+    [Parameter]
+    public string userId { get; set; }
+
+    private string SearchInput { get; set; } = "";
+    private List<UserViewModel> _searchUsers;
+
+    protected override void OnInitialized()
+    {
+        _searchUsers = new();
+    }
+
+    private async Task SearchUsers(ChangeEventArgs e)
+    {
+        Console.WriteLine(e.Value.ToString());
+        _searchUsers.Clear();
+        if (!String.IsNullOrEmpty(e.Value.ToString()))
+        {
+            var searchResults = _userService.GetUsersByUsername(e.Value.ToString());
+            await foreach (var searchResult in searchResults)
+            {
+                _searchUsers.Add(searchResult);
+                StateHasChanged();
+            }
+        }
+    }
 }

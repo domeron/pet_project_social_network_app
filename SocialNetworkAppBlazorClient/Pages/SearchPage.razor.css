@@ -1,0 +1,39 @@
+﻿.search-input-wrapper {
+    display: flex;
+    margin-bottom: 1em;
+}
+
+::deep .input-text {
+    border: 0.1em solid black;
+    flex-grow: 3;
+    padding: 0.5em 0.5em;
+}
+
+    ::deep .input-text:focus {
+        outline: none;
+    }
+
+::deep .input-select {
+    border: 0.1em solid black;
+    border-left: 0;
+    padding: 0.5em 0.5em;
+}
+
+
+.search-results-ul {
+    list-style-type: none;
+    padding: 0;
+    border: 0.1em solid #000;
+    margin: 1em 0;
+}
+
+.search-results-ul ::deep li {
+    border-bottom: 0.05em solid #000;
+}
+
+.search-results-ul ::deep li:last-child {
+    border-bottom: 0;
+}
+
+    .results-count {
+    }

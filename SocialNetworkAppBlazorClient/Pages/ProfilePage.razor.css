@@ -1,0 +1,15 @@
+﻿.profile-top {
+    padding: 1.5em;
+    margin-bottom: 1em;
+    background-color: #FFF;
+    border: 0.1em solid #000;
+}
+
+.profile-username {
+    font-size: large;
+}
+
+.profile-top-header {
+    display: flex;
+    justify-content: end;
+}

@@ -10,6 +10,7 @@ namespace SocialNetworkAppAPI.Repositories;
 public interface IPostRepository
 {
     IAsyncEnumerable<Post> GetPosts();
+    IAsyncEnumerable<Post> GetUserPosts(string userId);
     Task<Post> CreatePostAsync(PostCreateDTO createModel);
     Task<Post> UpdatePostAsync(PostUpdateDTO updateModel);
     Task<Post> DeletePostAsync(int postId);
@@ -25,6 +26,19 @@ public class PostRepository : IPostRepository
     public async IAsyncEnumerable<Post> GetPosts()
     {
         var posts = _context.Posts
+            .Include(p => p.User)
+            .AsAsyncEnumerable();
+
+        await foreach (var post in posts)
+        {
+            yield return post;
+        }
+    }
+
+    public async IAsyncEnumerable<Post> GetUserPosts(string userId)
+    {
+        var posts = _context.Posts
+            .Where(p => p.UserId.Equals(userId))
             .Include(p => p.User)
             .AsAsyncEnumerable();
 

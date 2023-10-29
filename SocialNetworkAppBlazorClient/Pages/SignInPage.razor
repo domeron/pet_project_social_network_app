@@ -1,33 +1,45 @@
 ﻿@page "/signin"
+@layout AuthenticationLayout
 
-<h3>SignInPage</h3>
 
-<EditForm EditContext="@_editContext" OnValidSubmit="@HandleValidSubmit">
-    @if (!String.IsNullOrEmpty(_errorMessage))
-    {
-        <div>
-            <p>@_errorMessage</p>
-        </div>    
-    }
+<div class="form-wrapper">
+    
+    <EditForm EditContext="@_editContext" OnValidSubmit="@HandleValidSubmit"
+        class="form">
+        <DataAnnotationsValidator/>
+        <span class="form-title">Sign In</span>
+        @if (!String.IsNullOrEmpty(_errorMessage))
+        {
+            <div class="error-wrapper">
+                <span>@_errorMessage</span>
+            </div>    
+        }
 
-    <div class="form-field">
-        <label>Email:</label>
-        <InputText @bind-Value="Model!.Email"/>
-        <ValidationMessage For="@(() => Model.Email)"/>
-    </div>
-    <div class="form-field">
-        <label>Password:</label>
-        <InputText @bind-Value="Model!.Password" />
-        <ValidationMessage For="@(() => Model.Password)" />
-    </div>
+        <div class="form-field">
+            <label>Email:</label>
+            <InputText @bind-Value="Model!.Email" 
+                class="input-text"/>
+            <div class="validation-message">
+                <ValidationMessage For="@(() => Model.Email)"/>
+            </div>
+        </div>
+        <div class="form-field">
+            <label>Password:</label>
+            <InputText @bind-Value="Model!.Password" type="password"
+                class="input-text"/>
+            <div class="validation-message">
+                <ValidationMessage For="@(() => Model.Password)" />
+            </div>
+        </div>
 
-    <div class="form-field">
-        <button type="submit">
-            Submit</button>
-    </div>
+        <div class="form-field button-field">
+            <button type="submit">
+                Submit</button>
+        </div>
 
-    <p>Don't have an account? <a href="/signup">Sign Up Here</a></p>
-</EditForm>
+        <span>Don't have an account? <a href="/signup">Sign Up Here</a></span>
+    </EditForm>
+</div>
 
 @inject IAuthenticationService _authenticationService
 @inject NavigationManager _navigationManager;

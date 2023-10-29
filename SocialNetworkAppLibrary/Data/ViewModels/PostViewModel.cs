@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SocialNetworkAppLibrary.Data.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace SocialNetworkAppLibrary.Data.ViewModels;
 public class PostViewModel
@@ -10,5 +11,15 @@ public class PostViewModel
     public string? Content { get; set; }
 
     public DateTime CreatedDate { get; set; }
+
+    public PostViewModel(Post post) { 
+        this.Id = post.Id;
+        this.UserName = post.User.UserName;
+        this.UserId = post.UserId;
+        this.Content = post.Content;
+        this.CreatedDate = post.CreatedDate;
+    }
+
+    public PostViewModel() { }
 
 }

@@ -1,39 +1,38 @@
 ﻿@page "/"
 
-<div class="main">
-    <div class="sidebar left-sidebar">
-        <SideNavBar/>
-    </div>
-
-    <div class="main-content">
-        @if (posts == null)
+@if (Posts!.Count() <= 0)
+{
+    <p>No posts found</p>
+}
+else
+{
+    <div class="posts-wrapper">
+        @foreach (var post in Posts!)
         {
-            <p>No posts found</p>
-        }
-        else
-        {
-            <div class="posts-wrapper">
-                @foreach (var post in posts)
-                {
-                    <PostComponent Post="@post" />
-                }
-            </div>
+            <PostComponent Post="@post" />
         }
     </div>
-
-    <div class="sidebar right-sidebar hidden">
-        aaaa
-    </div>
-</div>
-
+}
 
 @inject IPostsService _postsService
 
 @code {
-    private List<PostViewModel>? posts;
+    private List<PostViewModel>? Posts { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        posts = await _postsService.GetAllPosts();
+        Posts = new();
+        await LoadAllPosts();
+    }
+
+    private async Task LoadAllPosts()
+    {
+        var posts = _postsService.GetAllPosts();
+
+        await foreach (var post in posts)
+        {
+            Posts.Add(post);
+            StateHasChanged();
+        }
     }
 }

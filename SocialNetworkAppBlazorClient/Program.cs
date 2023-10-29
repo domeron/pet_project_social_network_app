@@ -18,6 +18,7 @@ builder.Services.AddScoped<ILocalStorageService, LocalStorageService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IHttpService, HttpService>();
 builder.Services.AddScoped<IPostsService, PostsService>();
+builder.Services.AddScoped<IUserService, UsersService>();
 
 var host = builder.Build();
 

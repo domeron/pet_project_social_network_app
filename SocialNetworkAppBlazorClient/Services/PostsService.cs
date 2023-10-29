@@ -8,7 +8,8 @@ namespace SocialNetworkAppBlazorClient.Services;
 
 public interface IPostsService
 {
-    Task<List<PostViewModel>> GetAllPosts();
+    IAsyncEnumerable<PostViewModel> GetAllPosts();
+    IAsyncEnumerable<PostViewModel> GetUserPosts(string userId);
     Task CreatePost(PostCreateDTO model);
 }
 
@@ -21,10 +22,21 @@ public class PostsService : IPostsService
         _httpService = httpService;
     }
 
-    public async Task<List<PostViewModel>> GetAllPosts()
+    public async IAsyncEnumerable<PostViewModel> GetAllPosts()
     {
-        var posts = await _httpService.Get<List<PostViewModel>>("/posts/all");
-        return posts;
+        var posts = await _httpService.Get<IAsyncEnumerable<PostViewModel>>("/posts/all");
+        await foreach (var post in posts)
+        {
+            yield return post;
+        }
+    }
+
+    public async IAsyncEnumerable<PostViewModel> GetUserPosts(string userId) {
+        var posts = await _httpService.Get<IAsyncEnumerable<PostViewModel>>($"/posts/user/{userId}");
+        await foreach (var post in posts)
+        {
+            yield return post;
+        }
     }
 
     public async Task CreatePost(PostCreateDTO model)
